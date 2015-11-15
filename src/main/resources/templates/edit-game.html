@@ -5,8 +5,8 @@
     <title></title>
 </head>
 <body>
-<form action="/edit-game" method="post">
-    <input type="hidden" name="id" value="{{id}}"/>
+{{#games}}
+<form action="/edit-game?id={{id}}" method="post">
     <input type="text" placeholder="Enter Game" name="edName"/>
     <select name="edSystem">
         <option value="Playstation4">PS4</option>
@@ -15,5 +15,6 @@
     </select>
     <button type="submit">Edit</button>
 </form>
+{{/games}}
 </body>
 </html>

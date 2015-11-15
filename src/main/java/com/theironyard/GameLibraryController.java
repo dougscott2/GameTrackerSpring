@@ -47,7 +47,7 @@ public class GameLibraryController {
             //model.addAttribute("users", users.findOneByName(username));
             model.addAttribute("games", games.findBySystemOrderByTitleAsc(system));
         } else
-//        model.addAttribute("users", users.findAll());
+        //model.addAttribute("users", users.findAll());
         model.addAttribute("games", games.findAll());
         return "home";
     }
@@ -92,6 +92,16 @@ public class GameLibraryController {
         games.save(game);
         return "redirect:/";
     }
+    @RequestMapping("edit")
+    public String edit(HttpSession session,
+                       Model model,
+                       Integer id){
+        String username = (String) session.getAttribute("username");
+        User user = users.findOneByName(username);
+        model.addAttribute("games", games.findOne(id));
+        return "edit-game";
+    }
+
 
     @RequestMapping("edit-game")
     public String editGame(Integer id,
@@ -99,6 +109,7 @@ public class GameLibraryController {
                            String edSystem,
                            HttpSession session
                            ) throws Exception{
+
         String username = (String) session.getAttribute("username");
 
         if (username==null){
