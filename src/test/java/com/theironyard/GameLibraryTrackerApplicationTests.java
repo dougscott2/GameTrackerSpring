@@ -1,5 +1,7 @@
 package com.theironyard;
 
+import com.theironyard.services.GameRepository;
+import com.theironyard.services.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +57,7 @@ public class GameLibraryTrackerApplicationTests {
 		);
 		assertTrue(games.count()==1);
 	}
-	@Test
+	/*@Test
 	public void testDeleteGame() throws Exception{
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/add-game")
@@ -75,6 +77,23 @@ public class GameLibraryTrackerApplicationTests {
 		);
 		assertTrue(games.count()==1);
 	}
+	@Test
+	public void testEditGame() throws Exception{
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/add-game")
+						.param("title", "Halo")
+						.param("system", "Xbox360")
+						.sessionAttr("username", "doug")
+		);
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/edit-game")
+						.param("id", "1")
+						.param("title", "Halo2")
+						.param("system", "Xbox360")
+						.sessionAttr("username", "doug")
+		);
+		assertTrue(games.findOne(1).title.equals("Halo2"));
+	}*/
 
 
 }

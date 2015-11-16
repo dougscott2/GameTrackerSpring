@@ -1,7 +1,12 @@
-package com.theironyard;
+package com.theironyard.controllers;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Autowired;
+import com.theironyard.entities.Game;
+import com.theironyard.entities.User;
+import com.theironyard.services.GameRepository;
+import com.theironyard.services.UserRepository;
+import com.theironyard.util.PasswordHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,12 +37,20 @@ public class GameLibraryController {
     @PostConstruct
     public void init() throws InvalidKeySpecException, NoSuchAlgorithmException, FileNotFoundException {
         User user = users.findOneByName("Admin");
+        User doug = users.findOneByName("doug");
         if(user == null){
             user = new User();
             user.name="Admin";
             user.password = PasswordHash.createHash("password");
             users.save(user);
         }
+        if(doug == null){
+            doug = new User();
+            doug.name="doug";
+            doug.password = PasswordHash.createHash("1234");
+            users.save(doug);
+        }
+
         if (games.count() == 0) {
             Scanner scanner = new Scanner(new File("games.csv"));
             scanner.nextLine();
@@ -81,6 +94,7 @@ public class GameLibraryController {
             //model.addAttribute("games", games.findAll());
             p = games.findAll(pr);
         }
+
 
             model.addAttribute("nextPage", page + 1);
             model.addAttribute("system", system);
@@ -134,18 +148,20 @@ public class GameLibraryController {
     @RequestMapping("edit")
     public String edit(HttpSession session,
                        Model model,
-                       Integer id) throws Exception {
+                       int id) throws Exception {
         String username = (String) session.getAttribute("username");
+        Game game = games.findOne(id);
         User user = users.findOneByName(username);
-        model.addAttribute("games", games.findOne(id));
-        if (games.findOne(id).user!= user){
-            throw new Exception("you can't edit someone else's entries!!");
+        model.addAttribute("games", game);
+        if (game.user!=user){
+            return "error";
+           // throw new Exception("you can't edit someone else's entries!!");
         }
         return "edit-game";
     }
 
     @RequestMapping("edit-game")
-    public String editGame(Integer id,
+    public String editGame(int id,
                            String edName,
                            String edSystem,
                            HttpSession session
@@ -168,7 +184,7 @@ public class GameLibraryController {
     }
 
     @RequestMapping("delete-game")
-    public String deleteGame(HttpSession session, Integer id) throws Exception {
+    public String deleteGame(HttpSession session, int id) throws Exception {
         String username = (String) session.getAttribute("username");
         User user = users.findOneByName(username);
         Game game = games.findOne(id);

@@ -29,12 +29,12 @@
 {{#username}}
 
 Welcome {{.}}  <a href="/logout">Logout</a>
-{{/username}}
+
 
 <br><br>
 
 
-{{#username}}
+
 <form action="add-game" method="post">
     <input type="text" placeholder="Enter Game" name="gameName"/>
     <select name="system">
@@ -49,26 +49,34 @@ Welcome {{.}}  <a href="/logout">Logout</a>
 
 <br>
 {{#username}}
+
 <table>
 <tr>
     <td>Game Title</td>
     <td>System</td>
     <td>Added by:</td>
-    <td>Edit</td>
-    <td>Delete</td>
+    <td>Edit/Delete</td>
+
 </tr>
+
+
     {{#games}}
-    {{#user}}
     <tr>
+
         <td>{{title}}</td>
         <td>{{system}}</td>
+        {{#user}}
         <td>{{name}}</td>
-        <td><a href="/edit?id={{id}}">Edit</a> </td>
-        <td><a href="/delete-game?id={{id}}">Delete</a> </td>
+        {{/user}}
+        <td> <a href="/edit?id={{id}}">Edit</a> <a href="/delete-game?id={{id}}">Delete</a> </td>
+
+
     </tr>
-    {{/user}}
     {{/games}}
+
+
 </table>
+
 {{#showNext}}
 <a href="/?page={{nextPage}}{{#system}}&system={{.}}{{/system}}">Next</a>
 {{/showNext}}
