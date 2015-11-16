@@ -20,7 +20,7 @@ public class User {
     String password;
 
 
-    /*@OneToMany(mappedBy = "user")
-    List<Game> userGames;*/
+    @OneToMany(mappedBy = "user")
+    List<Game> userGames;
 
 }

@@ -6,6 +6,13 @@
 </head>
 
 <body>
+<a href="/">All</a>
+<a href="/?system=Playstation4"> Playstation 4</a>
+<a href="/?system=Xbox360">Xbox 360</a>
+<a href="/?system=PC">PC</a>
+<a href="/?system=Nintendo64">Nintendo 64</a>
+<a href="/?userGames=true">Just My games</a>
+<br><br>
 
 {{^username}}
 <form action="login" method="post">
@@ -17,13 +24,7 @@
 <br><br>
 
 {{#username}}
-<a href="/">All</a>
-<a href="/?system=Playstation4"> Playstation 4</a>
-<a href="/?system=Xbox360">Xbox 360</a>
-<a href="/?system=PC">PC</a>
-<a href="/?system=Nintendo64">Nintendo 64</a>
-<a href="/?userGames=true">Just My games</a>
-<br><br>
+
 Welcome {{.}}  <a href="/logout">Logout</a>
 {{/username}}
 

@@ -39,15 +39,17 @@ public class GameLibraryController {
 
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
+        model.addAttribute("system", system);
+        model.addAttribute("userGames", userGames);
 
 
         if(userGames!=null){
-            //model.addAttribute("games", users.findOneByName(username).games);
+            model.addAttribute("games", users.findOneByName(username).userGames);
         } else if(system != null){
             //model.addAttribute("users", users.findOneByName(username));
-            model.addAttribute("games", games.findBySystemOrderByTitleAsc(system));
+            model.addAttribute("games", games.findAllBySystem(system));
         } else
-        //model.addAttribute("users", users.findAll());
+       // model.addAttribute("users", users.findOneByName(username));
         model.addAttribute("games", games.findAll());
         return "home";
     }

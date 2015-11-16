@@ -9,7 +9,7 @@ import java.util.List;
  * Created by DrScott on 11/13/15.
  */
 public interface GameRepository extends CrudRepository<Game, Integer>{
-    List<Game> findBySystemOrderByTitleAsc(String system);
+    List<Game> findAllBySystem(String system);
 
     @Query("SELECT g FROM Game g WHERE LOWER(title) LIKE '%' || LOWER(?) || '%'")
     List<Game> searchByName(String search);
