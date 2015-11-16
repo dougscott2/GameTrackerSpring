@@ -47,27 +47,36 @@ Welcome {{.}}  <a href="/logout">Logout</a>
 </form>
 {{/username}}
 
-
 <br>
-<br>
-{{#games}}
-{{title}}--{{system}} entered by {{#user}} {{name}}{{/user}}
 {{#username}}
-<!--<form action="/edit-game" method="post">
-    <input type="hidden" name="id" value="{{id}}"/>
-    <input type="text" placeholder="Enter Game" name="edName"/>
-    <select name="edSystem">
-        <option value="Playstation4">PS4</option>
-        <option value="Xbox360">Xbox 360</option>
-        <option value="PC">PC</option>
-    </select>
-    <button type="submit">Edit</button>
-</form> -->
-<a href="/edit?id={{id}}">Edit</a>
-<a href="/delete-game?id={{id}}">Delete</a>
+<table>
+<tr>
+    <td>Game Title</td>
+    <td>System</td>
+    <td>Added by:</td>
+    <td>Edit</td>
+    <td>Delete</td>
+</tr>
+    {{#games}}
+    {{#user}}
+    <tr>
+        <td>{{title}}</td>
+        <td>{{system}}</td>
+        <td>{{name}}</td>
+        <td><a href="/edit?id={{id}}">Edit</a> </td>
+        <td><a href="/delete-game?id={{id}}">Delete</a> </td>
+    </tr>
+    {{/user}}
+    {{/games}}
+</table>
+{{#showNext}}
+<a href="/?page={{nextPage}}{{#system}}&system={{.}}{{/system}}">Next</a>
+{{/showNext}}
 {{/username}}
-<br>
-{{/games}}
+
+
+
+
 <br>
 
 

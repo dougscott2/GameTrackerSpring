@@ -3,9 +3,12 @@ package com.theironyard;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -55,22 +58,34 @@ public class GameLibraryController {
     @RequestMapping("/")
     public String home(HttpSession session,
                        Model model,
-                      // String search,
                        String system,
-                       String userGames){
+                       String userGames,
+                       @RequestParam(defaultValue = "0")   int page){
+        PageRequest pr = new PageRequest(page, 5);
+        Page p;
 
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
         model.addAttribute("system", system);
         model.addAttribute("userGames", userGames);
         if(userGames!=null){
-            model.addAttribute("games", users.findOneByName(username).userGames);
+            //model.addAttribute("games", users.findOneByName(username).userGames);
+            p = games.findAllByUser(pr, users.findOneByName(username));
+            //users.findOneByName(username).userGames;
         } else if(system != null){
             //model.addAttribute("users", users.findOneByName(username));
-            model.addAttribute("games", games.findAllBySystem(system));
-        } else
-       // model.addAttribute("users", users.findOneByName(username));
-        model.addAttribute("games", games.findAll());
+           p = games.findAllBySystem(pr, system);
+            // model.addAttribute("games", games.findAllBySystem(system));
+        } else {
+            // model.addAttribute("users", users.findOneByName(username));
+            //model.addAttribute("games", games.findAll());
+            p = games.findAll(pr);
+        }
+
+            model.addAttribute("nextPage", page + 1);
+            model.addAttribute("system", system);
+            model.addAttribute("games", p);
+            model.addAttribute("showNext", p.hasNext());
         return "home";
     }
     @RequestMapping("login")
