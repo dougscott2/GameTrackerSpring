@@ -55,6 +55,26 @@ public class GameLibraryTrackerApplicationTests {
 		);
 		assertTrue(games.count()==1);
 	}
+	@Test
+	public void testDeleteGame() throws Exception{
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/add-game")
+						.param("title", "Halo")
+						.param("system", "Xbox360")
+						.sessionAttr("username", "doug")
+		);
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/add-game")
+						.param("title", "Halo2")
+						.param("system", "Xbox360")
+						.sessionAttr("username", "doug")
+		);
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/delete-game")
+				.param("id", "1")
+		);
+		assertTrue(games.count()==1);
+	}
 
 
 }
