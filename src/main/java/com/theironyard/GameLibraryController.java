@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Scanner;
 
 /**
  * Created by DrScott on 11/13/15.
@@ -24,10 +26,33 @@ public class GameLibraryController {
     @Autowired
     UserRepository users;
 
-   /* @PostConstruct
+    @PostConstruct
     public void init() throws InvalidKeySpecException, NoSuchAlgorithmException, FileNotFoundException {
 
-    }*/
+        User user = users.findOneByName("Admin");
+        if(user == null){
+            user = new User();
+            user.name="Admin";
+            user.password = PasswordHash.createHash("password");
+            users.save(user);
+        }
+
+        if (games.count() == 0) {
+            Scanner scanner = new Scanner(new File("games.csv"));
+            scanner.nextLine();
+            while (scanner.hasNext()) {
+                String line = scanner.nextLine();
+                String[] columns = line.split(",");
+                Game g = new Game();
+                int id = Integer.valueOf(columns[2]);
+                g.user=users.findOne(id);
+                g.title = columns[0];
+                g.system = columns[1];
+                // g.user = user;
+                games.save(g);
+            }
+        }
+    }
 
 
     @RequestMapping("/")
