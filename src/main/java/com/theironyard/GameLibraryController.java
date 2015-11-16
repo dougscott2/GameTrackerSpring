@@ -117,15 +117,21 @@ public class GameLibraryController {
         game.system = system;
         game.user=user;
         games.save(game);
+        Scanner scanner = new Scanner(new File("games.csv"));
+
+
         return "redirect:/";
     }
     @RequestMapping("edit")
     public String edit(HttpSession session,
                        Model model,
-                       Integer id){
+                       Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         User user = users.findOneByName(username);
         model.addAttribute("games", games.findOne(id));
+        if (games.findOne(id).user!= user){
+            throw new Exception("Wrong user!");
+        }
         return "edit-game";
     }
 
@@ -153,7 +159,14 @@ public class GameLibraryController {
         return "redirect:/";
     }
     @RequestMapping("delete-game")
-    public String deleteGame(Integer id){
+    public String deleteGame(HttpSession session, Integer id) throws Exception {
+        String username = (String) session.getAttribute("username");
+        User user = users.findOneByName(username);
+        Game game = games.findOne(id);
+        if(game.user != user){
+            throw new Exception ("Wrong user!");
+        }
+
         games.delete(id);
         return "redirect:/";
     }
