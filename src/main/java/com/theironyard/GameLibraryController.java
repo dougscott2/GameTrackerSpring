@@ -158,7 +158,8 @@ public class GameLibraryController {
         User user = users.findOneByName(username);
         Game game = games.findOne(id);
         if(game.user!=user){
-            throw new Exception ("You can't delete what you didn't make!");
+            //throw new Exception ("You can't delete what you didn't make!");
+            return "error";
         }
         games.delete(id);
         return "redirect:/";
