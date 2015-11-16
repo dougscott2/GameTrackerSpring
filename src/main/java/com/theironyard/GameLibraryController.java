@@ -28,7 +28,6 @@ public class GameLibraryController {
 
     @PostConstruct
     public void init() throws InvalidKeySpecException, NoSuchAlgorithmException, FileNotFoundException {
-
         User user = users.findOneByName("Admin");
         if(user == null){
             user = new User();
@@ -36,7 +35,6 @@ public class GameLibraryController {
             user.password = PasswordHash.createHash("password");
             users.save(user);
         }
-
         if (games.count() == 0) {
             Scanner scanner = new Scanner(new File("games.csv"));
             scanner.nextLine();
@@ -48,7 +46,6 @@ public class GameLibraryController {
                 g.user=users.findOne(id);
                 g.title = columns[0];
                 g.system = columns[1];
-                // g.user = user;
                 games.save(g);
             }
         }
@@ -66,8 +63,6 @@ public class GameLibraryController {
         model.addAttribute("username", username);
         model.addAttribute("system", system);
         model.addAttribute("userGames", userGames);
-
-
         if(userGames!=null){
             model.addAttribute("games", users.findOneByName(username).userGames);
         } else if(system != null){
@@ -92,7 +87,6 @@ public class GameLibraryController {
             throw new Exception("WRONG PASSWORD");
         }
         model.addAttribute("games", games.findAll());
-
         return "redirect:/";
     }
     @RequestMapping("logout")
@@ -117,7 +111,7 @@ public class GameLibraryController {
         game.system = system;
         game.user=user;
         games.save(game);
-        Scanner scanner = new Scanner(new File("games.csv"));
+       // Scanner scanner = new Scanner(new File("games.csv"));  tried writing to csv file
 
 
         return "redirect:/";
@@ -130,11 +124,10 @@ public class GameLibraryController {
         User user = users.findOneByName(username);
         model.addAttribute("games", games.findOne(id));
         if (games.findOne(id).user!= user){
-            throw new Exception("Wrong user!");
+            throw new Exception("you can't edit someone else's entries!!");
         }
         return "edit-game";
     }
-
 
     @RequestMapping("edit-game")
     public String editGame(Integer id,
@@ -158,15 +151,15 @@ public class GameLibraryController {
         games.save(game);
         return "redirect:/";
     }
+
     @RequestMapping("delete-game")
     public String deleteGame(HttpSession session, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         User user = users.findOneByName(username);
         Game game = games.findOne(id);
-        if(game.user != user){
-            throw new Exception ("Wrong user!");
+        if(game.user!=user){
+            throw new Exception ("You can't delete what you didn't make!");
         }
-
         games.delete(id);
         return "redirect:/";
     }
