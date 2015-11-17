@@ -10,7 +10,7 @@ public class Game{
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    int id;
+   public int id;
 
     @Column(nullable = false)
     public String title;

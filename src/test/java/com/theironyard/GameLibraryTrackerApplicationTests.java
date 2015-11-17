@@ -63,8 +63,22 @@ public class GameLibraryTrackerApplicationTests {
 	@Test
 	public void testDeleteGame() throws Exception{
 		mockMvc.perform(
+				MockMvcRequestBuilders.post("/login")
+						.param("username", "Test Name")
+						.param("password", "testPassword")
+		);
+		mockMvc.perform(
+				MockMvcRequestBuilders.post("/add-game")
+						.param("title", "Halo")
+						.param("system", "Xbox360")
+						.sessionAttr("username", "Test Name")
+		);
+		//System.out.println(games.f);
+
+		mockMvc.perform(
 				MockMvcRequestBuilders.post("/delete-game")
-						.param("id", "1")
+						.param("id", games.findAll().iterator().next().id + "")
+						.sessionAttr("username", "Test Name")
 		);
 		assertTrue(games.count()==0);
 	}
@@ -72,19 +86,25 @@ public class GameLibraryTrackerApplicationTests {
 	@Test
 	public void testEditGame() throws Exception{
 		mockMvc.perform(
+				MockMvcRequestBuilders.post("/login")
+						.param("username", "Test Name")
+						.param("password", "testPassword")
+		);
+		mockMvc.perform(
 				MockMvcRequestBuilders.post("/add-game")
 						.param("title", "Halo")
 						.param("system", "Xbox360")
-						.sessionAttr("username", "doug")
+						.sessionAttr("username", "Test Name")
 		);
+		int x = games.findAll().iterator().next().id;
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/edit-game")
-						.param("id", "1")
+						.param("id", x +"")
 						.param("edName", "Halo2")
 						.param("edSystem", "Xbox360")
-						.sessionAttr("username", "doug")
+						.sessionAttr("username", "Test Name")
 		);
-		assertTrue(games.findOne(1).title.equals("Halo2"));
+		assertTrue(games.findOne(x).title.equals("Halo2"));
 	}
 
 
