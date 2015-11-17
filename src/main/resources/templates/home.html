@@ -58,22 +58,16 @@ Welcome {{.}}  <a href="/logout">Logout</a>
     <td>Edit/Delete</td>
 
 </tr>
-
-
     {{#games}}
     <tr>
-
         <td>{{title}}</td>
         <td>{{system}}</td>
         {{#user}}
         <td>{{name}}</td>
         {{/user}}
         <td> <a href="/edit?id={{id}}">Edit</a> <a href="/delete-game?id={{id}}">Delete</a> </td>
-
-
     </tr>
     {{/games}}
-
 
 </table>
 

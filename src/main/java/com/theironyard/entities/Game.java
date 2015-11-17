@@ -17,6 +17,8 @@ public class Game{
     @Column(nullable = false)
     public String system;
 
+
+
     @ManyToOne
     public User user;
 }

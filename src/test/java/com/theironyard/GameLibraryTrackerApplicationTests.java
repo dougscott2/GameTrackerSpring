@@ -1,5 +1,7 @@
 package com.theironyard;
 
+import com.theironyard.entities.Game;
+import com.theironyard.entities.User;
 import com.theironyard.services.GameRepository;
 import com.theironyard.services.UserRepository;
 import org.junit.Before;
@@ -10,6 +12,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -33,7 +36,7 @@ public class GameLibraryTrackerApplicationTests {
 	MockMvc mockMvc;
 
 	@Before
-	public void Before(){
+		public void Before(){
 		games.deleteAll();
 		users.deleteAll();
 		mockMvc = MockMvcBuilders.webAppContextSetup(wap).build();
@@ -53,30 +56,19 @@ public class GameLibraryTrackerApplicationTests {
 				MockMvcRequestBuilders.post("/add-game")
 				.param("title", "Halo")
 				.param("system", "Xbox360")
-				.sessionAttr("username", "doug")
+				.sessionAttr("username", "Test Name")
 		);
 		assertTrue(games.count()==1);
 	}
-	/*@Test
+	@Test
 	public void testDeleteGame() throws Exception{
 		mockMvc.perform(
-				MockMvcRequestBuilders.post("/add-game")
-						.param("title", "Halo")
-						.param("system", "Xbox360")
-						.sessionAttr("username", "doug")
-		);
-		mockMvc.perform(
-				MockMvcRequestBuilders.post("/add-game")
-						.param("title", "Halo2")
-						.param("system", "Xbox360")
-						.sessionAttr("username", "doug")
-		);
-		mockMvc.perform(
 				MockMvcRequestBuilders.post("/delete-game")
-				.param("id", "1")
+						.param("id", "1")
 		);
-		assertTrue(games.count()==1);
+		assertTrue(games.count()==0);
 	}
+
 	@Test
 	public void testEditGame() throws Exception{
 		mockMvc.perform(
@@ -88,12 +80,12 @@ public class GameLibraryTrackerApplicationTests {
 		mockMvc.perform(
 				MockMvcRequestBuilders.post("/edit-game")
 						.param("id", "1")
-						.param("title", "Halo2")
-						.param("system", "Xbox360")
+						.param("edName", "Halo2")
+						.param("edSystem", "Xbox360")
 						.sessionAttr("username", "doug")
 		);
 		assertTrue(games.findOne(1).title.equals("Halo2"));
-	}*/
+	}
 
 
 }
