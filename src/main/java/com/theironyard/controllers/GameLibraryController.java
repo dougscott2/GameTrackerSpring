@@ -58,10 +58,16 @@ public class GameLibraryController {
                 String line = scanner.nextLine();
                 String[] columns = line.split(",");
                 Game g = new Game();
-                int id = Integer.valueOf(columns[2]);
-                g.user=users.findOne(id);
+
                 g.title = columns[0];
                 g.system = columns[1];
+                int id = Integer.valueOf(columns[2]);
+                g.user=users.findOne(id);
+                g.developer=columns[3];
+                /*g.img = columns[4];
+                if (g.img==null){
+                    g.img="You haven't set a picture yet!";
+                }*/
                 games.save(g);
             }
         }
@@ -82,16 +88,10 @@ public class GameLibraryController {
         model.addAttribute("system", system);
         model.addAttribute("userGames", userGames);
         if(userGames!=null){
-            //model.addAttribute("games", users.findOneByName(username).userGames);
             p = games.findAllByUser(pr, users.findOneByName(username));
-            //users.findOneByName(username).userGames;
         } else if(system != null){
-            //model.addAttribute("users", users.findOneByName(username));
            p = games.findAllBySystem(pr, system);
-            // model.addAttribute("games", games.findAllBySystem(system));
         } else {
-            // model.addAttribute("users", users.findOneByName(username));
-            //model.addAttribute("games", games.findAll());
             p = games.findAll(pr);
         }
 
@@ -138,6 +138,7 @@ public class GameLibraryController {
         Game game = new Game();
         game.title = gameName;
         game.system = system;
+
         game.user=user;
         games.save(game);
        // Scanner scanner = new Scanner(new File("games.csv"));  tried writing to csv file
